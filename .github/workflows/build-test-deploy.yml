@@ -1,0 +1,56 @@
+name: Build Test Deploy
+
+on:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  packages: write
+
+jobs:
+  build-test:
+    name: Build y test Node.js
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Instalar dependencias
+        run: npm ci
+
+      - name: Ejecutar tests
+        run: npm test
+
+  docker-build-push:
+    name: Build y publicación Docker
+    runs-on: ubuntu-latest
+    needs: build-test
+
+    steps:
+      - name: Descargar código
+        uses: actions/checkout@v4
+
+      - name: Login en GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Construir y publicar imagen Docker
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            ghcr.io/${{ github.repository_owner }}/api-tareas:latest
+            ghcr.io/${{ github.repository_owner }}/api-tareas:${{ github.sha }}
