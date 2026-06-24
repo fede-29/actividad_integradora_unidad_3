@@ -5,18 +5,6 @@ const tareas = [
 
 const obtenerTareas = (req, res) => {
     if (process.env.NOMBRE_LISTADO) {
-        res.json({
-            Listado: process.env.NOMBRE_LISTADO,
-            tareas: tareas
-        })
-    } else {
-        res.json(tareas);
-    }
-
-};
-
-const obtenerTareas = (req, res) => {
-    if (process.env.NOMBRE_LISTADO) {
         return res.json({
             Listado: process.env.NOMBRE_LISTADO,
             tareas
@@ -24,6 +12,21 @@ const obtenerTareas = (req, res) => {
     }
 
     return res.json(tareas);
+};
+
+const obtenerTareaPorId = (req, res) => {
+
+    const id = parseInt(req.params.id);
+
+    const tarea = tareas.find(t => t.id === id);
+
+    if (!tarea) {
+        return res.status(404).json({
+            mensaje: 'Tarea no encontrada'
+        });
+    }
+
+    res.json(tarea);
 };
 
 const crearTarea = (req, res) => {
