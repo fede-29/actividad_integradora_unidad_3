@@ -4,6 +4,12 @@ const tareas = [
 ];
 
 const obtenerTareas = (req, res) => {
+    if (process.env.NOMBRE_LISTADO) {
+        res.json({
+            Listado: process.env.NOMBRE_LISTADO,
+            tareas: tareas
+        })
+    }
     res.json(tareas);
 };
 
