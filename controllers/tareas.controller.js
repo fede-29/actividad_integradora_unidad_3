@@ -9,8 +9,10 @@ const obtenerTareas = (req, res) => {
             Listado: process.env.NOMBRE_LISTADO,
             tareas: tareas
         })
+    } else {
+        res.json(tareas);
     }
-    res.json(tareas);
+
 };
 
 const obtenerTareaPorId = (req, res) => {
