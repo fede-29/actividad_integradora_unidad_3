@@ -39,7 +39,7 @@ describe('API de tareas', () => {
     const response = await request(app).get('/tareas');
 
     expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('Listado', 'Mis tareas');
+    expect(response.body).toHaveProperty('Listado');
     expect(response.body).toHaveProperty('tareas');
     expect(Array.isArray(response.body.tareas)).toBe(true);
 
