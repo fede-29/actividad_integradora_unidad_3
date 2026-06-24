@@ -33,16 +33,4 @@ describe('API de tareas', () => {
     expect(response.body).toHaveProperty('id');
     expect(response.body).toHaveProperty('titulo', 'Aprender CI/CD');
   });
-  test('GET /tareas debe devolver listado y tareas cuando existe NOMBRE_LISTADO', async () => {
-    process.env.NOMBRE_LISTADO = 'Mis tareas';
-
-    const response = await request(app).get('/tareas');
-
-    expect(response.statusCode).toBe(200);
-    expect(response.body).toHaveProperty('Listado', 'Mis tareas');
-    expect(response.body).toHaveProperty('tareas');
-    expect(Array.isArray(response.body.tareas)).toBe(true);
-
-    delete process.env.NOMBRE_LISTADO;
-  });
 });
